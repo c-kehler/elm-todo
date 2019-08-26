@@ -1,18 +1,20 @@
--- Read more about this program in the official Elm guide:
--- https://guide.elm-lang.org/architecture/user_input/buttons.html
+module Main exposing (Flags, Model, Msg(..), Todo, Visibility(..), filterTodo, initialModel, itemsLeft, main, renderTodo, subscriptions, update, view)
 
-
-module Main exposing (..)
-
+import Browser
 import Html exposing (..)
-import Html.Keyed exposing (ul)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
+import Html.Keyed exposing (ul)
 
 
-main : Program Never Model Msg
+main : Program Flags Model Msg
 main =
-    beginnerProgram { model = initialModel, view = view, update = update }
+    Browser.element
+        { init = initialModel
+        , view = view
+        , update = update
+        , subscriptions = subscriptions
+        }
 
 
 type alias Model =
@@ -42,12 +44,24 @@ type Msg
     | SetVisibility Visibility
 
 
-initialModel : Model
-initialModel =
-    { field = ""
-    , filter = All
-    , todos = []
-    }
+type alias Flags =
+    {}
+
+
+initialModel : Flags -> ( Model, Cmd Msg )
+initialModel flags =
+    ( { field = ""
+      , filter = All
+      , todos = []
+      }
+    , Cmd.none
+    )
+
+
+subscriptions : Model -> Sub Msg
+subscriptions _ =
+    Sub.batch
+        []
 
 
 view : Model -> Html.Html Msg
@@ -62,10 +76,9 @@ view model =
             )
         , model.todos
             |> itemsLeft
-            |> toString
+            |> String.fromInt
             |> String.append "Item left : "
             |> text
-        , filterView model.filter
         ]
 
 
@@ -91,74 +104,46 @@ itemsLeft todos =
                 (\item count ->
                     if item.completed then
                         count + 1
+
                     else
                         count
                 )
                 0
                 todos
     in
-        List.length todos - nbCompleted
+    List.length todos - nbCompleted
 
 
 renderTodo : Todo -> ( String, Html.Html Msg )
 renderTodo todo =
     let
         lineThroughStyle =
-            Html.Attributes.style
-                (if todo.completed then
-                    [ ( "text-decoration", "line-through" ) ]
-                 else
-                    []
-                )
-    in
-        ( toString todo.id
-        , li
-            [ lineThroughStyle
-            ]
-            [ input
-                [ type_ "checkbox"
-                , onClick (Toggle todo.id)
-                , checked todo.completed
-                ]
-                []
-            , text todo.title
-            ]
-        )
+            if todo.completed then
+                Html.Attributes.style "text-decoration" "line-through"
 
-
-filterView : Visibility -> Html.Html Msg
-filterView visibility =
-    let
-        underlineAttr filter =
-            if visibility == filter then
-                [ ( "text-decoration", "underline" ) ]
             else
-                []
+                Html.Attributes.style "" ""
     in
-        div []
-            [ a
-                [ onClick (SetVisibility All)
-                , style (underlineAttr All)
-                ]
-                [ text "  All  " ]
-            , a
-                [ onClick (SetVisibility Completed)
-                , style (underlineAttr Completed)
-                ]
-                [ text "  Completed  " ]
-            , a
-                [ onClick (SetVisibility Active)
-                , style (underlineAttr Active)
-                ]
-                [ text "  Active  " ]
+    ( String.fromInt todo.id
+    , li
+        [ lineThroughStyle
+        ]
+        [ input
+            [ type_ "checkbox"
+            , onClick (Toggle todo.id)
+            , checked todo.completed
             ]
+            []
+        , text todo.title
+        ]
+    )
 
 
-update : Msg -> Model -> Model
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         UpdateField todo ->
-            { model | field = todo }
+            ( { model | field = todo }, Cmd.none )
 
         Add ->
             let
@@ -171,25 +156,28 @@ update msg model =
                         Just todo ->
                             todo.id + 1
             in
-                { model
-                    | todos =
-                        { id = nextId
-                        , title = model.field
-                        , completed = False
-                        }
-                            :: model.todos
-                    , field = ""
-                }
+            ( { model
+                | todos =
+                    { id = nextId
+                    , title = model.field
+                    , completed = False
+                    }
+                        :: model.todos
+                , field = ""
+              }
+            , Cmd.none
+            )
 
         Toggle id ->
             let
                 updateTodo todo =
                     if todo.id == id then
                         { todo | completed = not todo.completed }
+
                     else
                         todo
             in
-                { model | todos = List.map updateTodo model.todos }
+            ( { model | todos = List.map updateTodo model.todos }, Cmd.none )
 
         SetVisibility visibility ->
-            { model | filter = visibility }
+            ( { model | filter = visibility }, Cmd.none )
