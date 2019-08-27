@@ -6,6 +6,7 @@ import Html exposing (..)
 
 main : Program () Model Msg
 main =
+    -- TODO: A value isn't being set properly here
     Browser.sandbox
         { init = { greeting = "" }
         , update = update
@@ -30,4 +31,5 @@ update msg model =
 
 view : Model -> Html.Html Msg
 view =
+    -- TODO: The compiler can't find model here. Why?
     div [] [ text model.greeting ]
