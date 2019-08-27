@@ -1,17 +1,19 @@
-# Todo-list in elm
-A simple todo-list app for the purpose of learning the elm langage.
+## Todo list in Elm
+This is a simple todo list for the purpose of learning Elm.
+---
+### Usage
 
-## Start the app via elm reactor 
-Once you are in the repo, start the dev server with
-```sh
-$ elm reactor
+Go to the proper directory and run `elm reactor` e.g:
+```
+cd part1
+elm reactor
 ```
 
-
-1. Get hello world to output
-2. Get input form to appear
-3. Display inputted items
-4. Mark entries as completed
+---
+### Goals
+1. Simple "hello world" program
+2. Be able to add multiple items to the TODO list
+3. Display all entered items
+4. Checkbox all items
 5. Count total of entries
-6. Add a filter view
-7. Conditionally apply filter
+6. Get `filterView` to compile
