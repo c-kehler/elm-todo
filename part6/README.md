@@ -12,5 +12,5 @@ elm reactor
 ### Goal
 Get `filterView` to compile
 
-This is actually a fork of another TODO list repo that has become out of date.
-What we're effectively doing is upgrading this Elm module to be compatible with `v0.19`.
+This is actually a copy of the original forked repo that has bitrotted.
+Essentially we are upgrading this Elm module to be compatible with version `0.19`.
