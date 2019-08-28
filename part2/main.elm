@@ -51,7 +51,7 @@ initialModel flags =
     )
 
 
-view : Model -> Html.Html Msg
+view : Model -> Html Msg
 view model =
     div []
         [ input [ placeholder "Add a todo", onInput UpdateField, value model.field ] []
@@ -60,7 +60,7 @@ view model =
         ]
 
 
-renderTodo : Todo -> Html.Html Msg
+renderTodo : Todo -> Html Msg
 renderTodo todo =
     li []
         [ text todo.title ]
