@@ -29,7 +29,7 @@ update msg model =
             model
 
 
-view : Model -> Html.Html Msg
+view : Model -> Html Msg
 view =
     -- TODO: The compiler can't find model here. Why?
     div [] [ text model.greeting ]
