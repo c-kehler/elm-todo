@@ -1,4 +1,4 @@
-module Main exposing (Flags, Model, Msg(..), Todo, Visibility(..), initialModel, main, renderTodo, subscriptions, update, view)
+module Main exposing (main)
 
 import Browser
 import Html exposing (..)
@@ -6,13 +6,12 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 
 
-main : Program Flags Model Msg
+main : Program () Model Msg
 main =
-    Browser.element
+    Browser.sandbox
         { init = initialModel
         , view = view
         , update = update
-        , subscriptions = subscriptions
         }
 
 
@@ -38,17 +37,11 @@ type Msg
     | UpdateField String
 
 
-type alias Flags =
-    {}
-
-
-initialModel : Flags -> ( Model, Cmd Msg )
-initialModel flags =
-    ( { field = ""
-      , todos = []
-      }
-    , Cmd.none
-    )
+initialModel : Model
+initialModel =
+    { field = ""
+    , todos = []
+    }
 
 
 view : Model -> Html Msg
@@ -66,20 +59,18 @@ renderTodo todo =
         [ text todo.title ]
 
 
-update : Msg -> Model -> ( Model, Cmd Msg )
+update : Msg -> Model -> Model
 update msg model =
     case msg of
         UpdateField todo ->
-            ( { model | field = todo }, Cmd.none )
+            { model | field = todo }
 
         -- TODO: The problem line is here. How come the TODO list can only hold one item at a time?
         Add ->
-            ( { model
+            { model
                 | todos = { title = model.field } :: []
                 , field = ""
-              }
-            , Cmd.none
-            )
+            }
 
 
 subscriptions : Model -> Sub Msg

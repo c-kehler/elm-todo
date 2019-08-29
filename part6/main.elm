@@ -1,4 +1,4 @@
-module Main exposing (Flags, Model, Msg(..), Todo, Visibility(..), filterTodo, initialModel, itemsLeft, main, renderTodo, subscriptions, update, view)
+module Main exposing (main)
 
 import Browser
 import Html exposing (..)
@@ -7,13 +7,12 @@ import Html.Events exposing (..)
 import Html.Keyed exposing (ul)
 
 
-main : Program Flags Model Msg
+main : Program () Model Msg
 main =
-    Browser.element
+    Browser.sandbox
         { init = initialModel
         , view = view
         , update = update
-        , subscriptions = subscriptions
         }
 
 
@@ -44,27 +43,15 @@ type Msg
     | SetVisibility Visibility
 
 
-type alias Flags =
-    {}
+initialModel : Model
+initialModel =
+    { field = ""
+    , filter = All
+    , todos = []
+    }
 
 
-initialModel : Flags -> ( Model, Cmd Msg )
-initialModel flags =
-    ( { field = ""
-      , filter = All
-      , todos = []
-      }
-    , Cmd.none
-    )
-
-
-subscriptions : Model -> Sub Msg
-subscriptions _ =
-    Sub.batch
-        []
-
-
-view : Model -> Html.Html Msg
+view : Model -> Html Msg
 view model =
     div []
         [ input [ placeholder "Add a todo", onInput UpdateField, value model.field ] []
@@ -115,7 +102,7 @@ itemsLeft todos =
     List.length todos - nbCompleted
 
 
-renderTodo : Todo -> ( String, Html.Html Msg )
+renderTodo : Todo -> ( String, Html Msg )
 renderTodo todo =
     let
         lineThroughStyle =
@@ -145,7 +132,7 @@ renderTodo todo =
 -- NOTE: This can be fixed in several different ways!
 
 
-filterView : Visibility -> Html.Html Msg
+filterView : Visibility -> Html Msg
 filterView visibility =
     let
         underlineAttr filter =
@@ -174,11 +161,11 @@ filterView visibility =
         ]
 
 
-update : Msg -> Model -> ( Model, Cmd Msg )
+update : Msg -> Model -> Model
 update msg model =
     case msg of
         UpdateField todo ->
-            ( { model | field = todo }, Cmd.none )
+            { model | field = todo }
 
         Add ->
             let
@@ -191,7 +178,7 @@ update msg model =
                         Just todo ->
                             todo.id + 1
             in
-            ( { model
+            { model
                 | todos =
                     { id = nextId
                     , title = model.field
@@ -199,9 +186,7 @@ update msg model =
                     }
                         :: model.todos
                 , field = ""
-              }
-            , Cmd.none
-            )
+            }
 
         Toggle id ->
             let
@@ -212,7 +197,7 @@ update msg model =
                     else
                         todo
             in
-            ( { model | todos = List.map updateTodo model.todos }, Cmd.none )
+            { model | todos = List.map updateTodo model.todos }
 
         SetVisibility visibility ->
-            ( { model | filter = visibility }, Cmd.none )
+            { model | filter = visibility }
