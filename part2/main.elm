@@ -59,10 +59,15 @@ update msg model =
         UpdateField todo ->
             { model | field = todo }
 
-        -- TODO: The problem line is here. How come the TODO list can only hold one item at a time?
         Add ->
+            {- TODO: Change how this title is being set so that the todo list is being appended to instead of replaced.
+
+               hint:
+                 Adding an element to the front of the list is called cons (::)
+                 https://package.elm-lang.org/packages/elm/core/latest/List#(::)
+            -}
             { model
-                | todos = { title = model.field } :: []
+                | todos = [ { title = model.field } ]
                 , field = ""
             }
 
