@@ -1,19 +1,18 @@
-module Main exposing (main)
+-- Read more about this program in the official Elm guide:
+-- https://guide.elm-lang.org/architecture/user_input/buttons.html
 
-import Browser
+
+module Main exposing (..)
+
 import Html exposing (..)
+import Html.Keyed exposing (ul)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import Html.Keyed exposing (ul)
 
 
-main : Program () Model Msg
+main : Program Never Model Msg
 main =
-    Browser.sandbox
-        { init = initialModel
-        , view = view
-        , update = update
-        }
+    beginnerProgram { model = initialModel, view = view, update = update }
 
 
 type alias Model =
@@ -51,7 +50,7 @@ initialModel =
     }
 
 
-view : Model -> Html Msg
+view : Model -> Html.Html Msg
 view model =
     div []
         [ input [ placeholder "Add a todo", onInput UpdateField, value model.field ] []
@@ -63,7 +62,7 @@ view model =
             )
         , model.todos
             |> itemsLeft
-            |> String.fromInt
+            |> toString
             |> String.append "Item left : "
             |> text
         , filterView model.filter
@@ -92,73 +91,67 @@ itemsLeft todos =
                 (\item count ->
                     if item.completed then
                         count + 1
-
                     else
                         count
                 )
                 0
                 todos
     in
-    List.length todos - nbCompleted
+        List.length todos - nbCompleted
 
 
-renderTodo : Todo -> ( String, Html Msg )
+renderTodo : Todo -> ( String, Html.Html Msg )
 renderTodo todo =
     let
         lineThroughStyle =
-            if todo.completed then
-                Html.Attributes.style "text-decoration" "line-through"
-
-            else
-                Html.Attributes.style "" ""
+            Html.Attributes.style
+                (if todo.completed then
+                    [ ( "text-decoration", "line-through" ) ]
+                 else
+                    []
+                )
     in
-    ( String.fromInt todo.id
-    , li
-        [ lineThroughStyle
-        ]
-        [ input
-            [ type_ "checkbox"
-            , onClick (Toggle todo.id)
-            , checked todo.completed
+        ( toString todo.id
+        , li
+            [ lineThroughStyle
             ]
-            []
-        , text todo.title
-        ]
-    )
+            [ input
+                [ type_ "checkbox"
+                , onClick (Toggle todo.id)
+                , checked todo.completed
+                ]
+                []
+            , text todo.title
+            ]
+        )
 
 
-
--- TODO: Get this function to compile correctly
--- NOTE: This can be fixed in several different ways!
-
-
-filterView : Visibility -> Html Msg
+filterView : Visibility -> Html.Html Msg
 filterView visibility =
     let
         underlineAttr filter =
             if visibility == filter then
                 [ ( "text-decoration", "underline" ) ]
-
             else
                 []
     in
-    div []
-        [ a
-            [ onClick (SetVisibility All)
-            , style (underlineAttr All)
+        div []
+            [ a
+                [ onClick (SetVisibility All)
+                , style (underlineAttr All)
+                ]
+                [ text "  All  " ]
+            , a
+                [ onClick (SetVisibility Completed)
+                , style (underlineAttr Completed)
+                ]
+                [ text "  Completed  " ]
+            , a
+                [ onClick (SetVisibility Active)
+                , style (underlineAttr Active)
+                ]
+                [ text "  Active  " ]
             ]
-            [ text "  All  " ]
-        , a
-            [ onClick (SetVisibility Completed)
-            , style (underlineAttr Completed)
-            ]
-            [ text "  Completed  " ]
-        , a
-            [ onClick (SetVisibility Active)
-            , style (underlineAttr Active)
-            ]
-            [ text "  Active  " ]
-        ]
 
 
 update : Msg -> Model -> Model
@@ -178,26 +171,25 @@ update msg model =
                         Just todo ->
                             todo.id + 1
             in
-            { model
-                | todos =
-                    { id = nextId
-                    , title = model.field
-                    , completed = False
-                    }
-                        :: model.todos
-                , field = ""
-            }
+                { model
+                    | todos =
+                        { id = nextId
+                        , title = model.field
+                        , completed = False
+                        }
+                            :: model.todos
+                    , field = ""
+                }
 
         Toggle id ->
             let
                 updateTodo todo =
                     if todo.id == id then
                         { todo | completed = not todo.completed }
-
                     else
                         todo
             in
-            { model | todos = List.map updateTodo model.todos }
+                { model | todos = List.map updateTodo model.todos }
 
         SetVisibility visibility ->
             { model | filter = visibility }

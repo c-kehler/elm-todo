@@ -10,7 +10,7 @@ elm reactor
 
 ---
 ### Goal
-Get `filterView` to compile
+Get `main.elm` to compile.
 
-This is actually a copy of the original forked repo that has bitrotted.
+This is actually a copy of the original elm-todo repo that has bit rot.
 Essentially we are upgrading this Elm module to be compatible with version `0.19`.
