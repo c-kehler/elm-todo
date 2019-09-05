@@ -1,4 +1,4 @@
-module Main exposing (Model, Msg(..), init, main, update, view)
+module Main exposing (main)
 
 import Browser
 import Html exposing (Html, button, div, text)
@@ -17,14 +17,14 @@ type alias Model =
     Int
 
 
-type Msg
-    = Increment
-    | Decrement
-
-
 init : Model
 init =
     0
+
+
+type Msg
+    = Increment
+    | Decrement
 
 
 update : Msg -> Model -> Model

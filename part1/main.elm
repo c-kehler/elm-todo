@@ -13,7 +13,7 @@ main =
          of example of how you would start an Elm with preset configurations.
     -}
     Browser.sandbox
-        { init = { greeting = "" }
+        { init = init
         , update = update
         , view = view
         }
@@ -21,6 +21,11 @@ main =
 
 type alias Model =
     { greeting : String }
+
+
+init : Model
+init =
+    { greeting = "" }
 
 
 type Msg
