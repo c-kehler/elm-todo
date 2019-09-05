@@ -6,7 +6,11 @@ import Html exposing (..)
 
 main : Program () Model Msg
 main =
-    -- TODO: A value isn't being set properly here
+    {- TODO: Set greeting equal to "hello world"
+
+       NOTE:
+         Remember `init` runs when our Elm app initializes. This is a barebones of example of how you would start an Elm with preset configurations.
+    -}
     Browser.sandbox
         { init = { greeting = "" }
         , update = update
@@ -31,5 +35,9 @@ update msg model =
 
 view : Model -> Html Msg
 view =
-    -- TODO: The compiler can't find model here. Why?
+    {- TODO: Get this function to compile.
+
+       hint:
+         Look at the type signature. This function is supposed to take in a `Model` argument, and output an `Html Msg`
+    -}
     div [] [ text model.greeting ]
