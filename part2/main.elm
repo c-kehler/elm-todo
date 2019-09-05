@@ -26,12 +26,6 @@ type alias Todo =
     }
 
 
-type Visibility
-    = All
-    | Completed
-    | Active
-
-
 type Msg
     = Add
     | UpdateField String

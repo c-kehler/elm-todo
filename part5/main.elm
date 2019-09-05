@@ -46,12 +46,6 @@ type alias Todo =
     }
 
 
-type Visibility
-    = All
-    | Completed
-    | Active
-
-
 
 -- UPDATE
 
