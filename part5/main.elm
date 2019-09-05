@@ -129,12 +129,12 @@ todoView todo =
                We want to make sure the user knows that checked items are done
                Conditionally apply css on checked items
 
-               Hint:
-               We've added a new property to each Todo item so that the type is now
-               { title: String, checked: Bool }
+               HINT:
+               We've added a new property to each Todo item so that the type
+               is now { title: String, checked: Bool }
 
-               Using this new property, we need to check if it is set to True and
-               apply a style
+               Using this new property, we need to check if it is set to True
+               and apply a style
 
                Whatever we add to this list should have the same type as the
                previous elements (Html.Attribute)

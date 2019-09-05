@@ -70,7 +70,12 @@ update msg model =
 view : Model -> Html Msg
 view model =
     div []
-        [ input [ placeholder "Add a todo", onInput UpdateField, value model.field ] []
+        [ input
+            [ placeholder "Add a todo"
+            , onInput UpdateField
+            , value model.field
+            ]
+            []
         , button [ onClick Add ] [ text "Add" ]
         , ul [] (List.map todoView model.todos)
         ]
@@ -81,11 +86,12 @@ todoView todo =
     li [ style "list-style" "none" ]
         [ {- TODO: Replace this text "checkbox" with an actual checkbox.
 
-             hint:
+             HINT:
                Html.text has a type of `String -> Html Msg`
                https://package.elm-lang.org/packages/elm/html/latest/Html#text
 
-               However, most other elements have a type of `List (Attribute msg) -> List (Html msg) -> Html msg`
+               However, most other elements have a type of
+               `List (Attribute msg) -> List (Html msg) -> Html msg`
                https://package.elm-lang.org/packages/elm/html/latest/Html#input
           -}
           text "checkbox"

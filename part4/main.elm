@@ -78,9 +78,11 @@ view model =
 
         {- TODO
 
-           We want to see how many total tasks we have.  Fix the compilation error occuring on the line below!
+           We want to see how many total tasks we have.  Fix the compilation
+           error occuring on the line below!
 
-           Hint: text only takes 1 argument
+           HINT:
+             text only takes 1 argument
 
            Types not matching up?
            See if the core library has a function to convert from one to another!

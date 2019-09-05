@@ -41,7 +41,12 @@ initialModel =
 view : Model -> Html Msg
 view model =
     div []
-        [ input [ placeholder "Add a todo", onInput UpdateField, value model.field ] []
+        [ input
+            [ placeholder "Add a todo"
+            , onInput UpdateField
+            , value model.field
+            ]
+            []
         , button [ onClick Add ] [ text "Add" ]
         , ul [] (model.todos |> List.map renderTodo)
         ]
@@ -60,9 +65,10 @@ update msg model =
             { model | field = todo }
 
         Add ->
-            {- TODO: Change how this title is being set so that the todo list is being appended to instead of replaced.
+            {- TODO: Change how this title is being set so that the todo list
+               is being appended to instead of replaced.
 
-               hint:
+               HINT:
                  Adding an element to the front of the list is called cons (::)
                  https://package.elm-lang.org/packages/elm/core/latest/List#(::)
             -}
