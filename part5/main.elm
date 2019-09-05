@@ -29,7 +29,8 @@ initialModel : Model
 initialModel =
     { field = ""
     , todos =
-        [ { title = "Learn elm"
+        [ { id = 1
+          , title = "Learn elm"
           , checked = False
           }
         ]
@@ -41,7 +42,8 @@ initialModel =
 
 
 type alias Todo =
-    { title : String
+    { id : Int
+    , title : String
     , checked : Bool
     }
 
@@ -53,7 +55,7 @@ type alias Todo =
 type Msg
     = Add
     | UpdateField String
-    | ToggleCheck String Bool
+    | SetCheckStatus Int Bool
 
 
 update : Msg -> Model -> Model
@@ -63,33 +65,35 @@ update msg model =
             { model | field = todo }
 
         Add ->
+            let
+                nextId : Int
+                nextId =
+                    List.map .id model.todos
+                        |> List.maximum
+                        |> Maybe.withDefault 0
+                        |> (+) 1
+            in
             { model
                 | todos =
-                    { title = model.field
+                    { id = nextId
+                    , title = model.field
                     , checked = False
                     }
                         :: model.todos
                 , field = ""
             }
 
-        ToggleCheck todoName _ ->
+        SetCheckStatus todoId isChecked ->
             let
-                flipChecked : Todo -> Todo
-                flipChecked todo =
-                    { todo | checked = not todo.checked }
+                updateTodo : Todo -> Todo
+                updateTodo todo =
+                    if todo.id == todoId then
+                        { todo | checked = isChecked }
 
-                updatedTodos =
-                    List.map
-                        (\t ->
-                            if t.title == todoName then
-                                flipChecked t
-
-                            else
-                                t
-                        )
-                        model.todos
+                    else
+                        todo
             in
-            { model | todos = updatedTodos }
+            { model | todos = List.map updateTodo model.todos }
 
 
 
@@ -98,18 +102,25 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
+    let
+        uncheckedTodos : Int
+        uncheckedTodos =
+            model.todos
+                |> List.filter (\todo -> not todo.checked)
+                |> List.length
+    in
     div []
         [ input [ placeholder "Add a todo", onInput UpdateField, value model.field ] []
         , button [ onClick Add ] [ text "Add" ]
         , ul [] (List.map todoView model.todos)
-        , text <| "Number of todo tasks: " ++ (String.fromInt <| List.length model.todos)
+        , text <| "Number of tasks left: " ++ String.fromInt uncheckedTodos
         ]
 
 
 todoView : Todo -> Html Msg
 todoView todo =
     li [ style "list-style" "none" ]
-        [ input [ type_ "checkbox", onCheck <| ToggleCheck todo.title ] []
+        [ input [ type_ "checkbox", onCheck <| SetCheckStatus todo.id ] []
         , span
             [ style "font-size" "1em"
             , style "color" "slateblue"
