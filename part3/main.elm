@@ -6,10 +6,6 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 
 
-
--- MAIN
-
-
 main : Program () Model Msg
 main =
     Browser.sandbox
@@ -25,19 +21,15 @@ type alias Model =
     }
 
 
+type alias Todo =
+    { title : String
+    }
+
+
 initialModel : Model
 initialModel =
     { field = ""
     , todos = []
-    }
-
-
-
--- TYPES
-
-
-type alias Todo =
-    { title : String
     }
 
 

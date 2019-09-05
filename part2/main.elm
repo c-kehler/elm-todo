@@ -26,11 +26,6 @@ type alias Todo =
     }
 
 
-type Msg
-    = Add
-    | UpdateField String
-
-
 initialModel : Model
 initialModel =
     { field = ""
@@ -38,24 +33,13 @@ initialModel =
     }
 
 
-view : Model -> Html Msg
-view model =
-    div []
-        [ input
-            [ placeholder "Add a todo"
-            , onInput UpdateField
-            , value model.field
-            ]
-            []
-        , button [ onClick Add ] [ text "Add" ]
-        , ul [] (model.todos |> List.map renderTodo)
-        ]
+
+-- UPDATE
 
 
-renderTodo : Todo -> Html Msg
-renderTodo todo =
-    li []
-        [ text todo.title ]
+type Msg
+    = Add
+    | UpdateField String
 
 
 update : Msg -> Model -> Model
@@ -78,7 +62,25 @@ update msg model =
             }
 
 
-subscriptions : Model -> Sub Msg
-subscriptions _ =
-    Sub.batch
-        []
+
+-- VIEW
+
+
+todoView : Todo -> Html Msg
+todoView todo =
+    li []
+        [ text todo.title ]
+
+
+view : Model -> Html Msg
+view model =
+    div []
+        [ input
+            [ placeholder "Add a todo"
+            , onInput UpdateField
+            , value model.field
+            ]
+            []
+        , button [ onClick Add ] [ text "Add" ]
+        , ul [] (model.todos |> List.map todoView)
+        ]
