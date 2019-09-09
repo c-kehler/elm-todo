@@ -1,6 +1,15 @@
 ## Todo list in Elm
 This is a simple todo list for the purpose of learning Elm.
 ---
+### Setup
+
+## Elm
+https://guide.elm-lang.org/install.html
+
+## Workshop
+https://github.com/jscho13/elm-todo
+
+
 ### Usage
 
 Go to the proper directory and run `elm reactor` e.g:
