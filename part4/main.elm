@@ -85,7 +85,7 @@ view model =
             []
         , button [ onClick Add ] [ text "Add" ]
         , ul [] (List.map todoView model.todos)
-        , text "Number of todo tasks: " ++ List.length model.todos
+        , text "Total number of tasks: " ++ List.length model.todos
         ]
 
 

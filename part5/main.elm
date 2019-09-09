@@ -112,6 +112,7 @@ view model =
             []
         , button [ onClick Add ] [ text "Add" ]
         , Html.Keyed.ul [] (List.map todoView model.todos)
+        , text ("Total number of tasks: " ++ String.fromInt (List.length model.todos))
         ]
 
 
