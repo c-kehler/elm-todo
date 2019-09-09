@@ -7,7 +7,7 @@ import Html.Events exposing (onClick)
 
 main =
     Browser.sandbox
-        { init = init
+        { init = initialModel
         , update = update
         , view = view
         }
@@ -17,8 +17,8 @@ type alias Model =
     Int
 
 
-init : Model
-init =
+initialModel : Model
+initialModel =
     0
 
 
