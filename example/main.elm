@@ -5,6 +5,7 @@ import Html exposing (Html, button, div, text)
 import Html.Events exposing (onClick)
 
 
+main : Program () Model Msg
 main =
     Browser.sandbox
         { init = initialModel

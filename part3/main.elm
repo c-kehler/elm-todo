@@ -73,19 +73,23 @@ view model =
         ]
 
 
+
+{- TODO: Replace the placeholder "[checkbox] " text with an actual checkbox
+    in `todoView` below.
+
+   HINT:
+    Most Html elements (with the exception of `text`) have the type signature
+    of `List (Attribute msg) -> List (Html msg) -> Html msg`
+
+    `type` is a keyword in elm, so the Html Attribute for setting
+    this is actually `type_`
+    https://package.elm-lang.org/packages/elm/html/latest/Html-Attributes#type_
+-}
+
+
 todoView : Todo -> Html Msg
 todoView todo =
     li [ style "list-style" "none" ]
-        [ {- TODO: Replace this text "checkbox" with an actual checkbox.
-
-             HINT:
-               Html.text has a type of `String -> Html Msg`
-               https://package.elm-lang.org/packages/elm/html/latest/Html#text
-
-               However, most other elements have a type of
-               `List (Attribute msg) -> List (Html msg) -> Html msg`
-               https://package.elm-lang.org/packages/elm/html/latest/Html#input
-          -}
-          text "checkbox"
+        [ text "[checkbox] "
         , text todo.title
         ]

@@ -48,14 +48,24 @@ update msg model =
         UpdateField todo ->
             { model | field = todo }
 
-        Add ->
-            {- TODO: Change how this title is being set so that the todo list
-               is being appended to instead of replaced.
+        {- TODO: Fix the `Add` case so that we don't lose any todos from
+            the model
 
-               HINT:
-                 Adding an element to the front of the list is called cons (::)
-                 https://package.elm-lang.org/packages/elm/core/latest/List#(::)
-            -}
+           HINT:
+            Some of the basic operators that are supplied by the elm core
+            library like `+` are called infix operators. This means that
+            the operator is placed between the arguments (e.g. 1 + 2)
+
+            This is denoted by the parentheses around the operator name in
+            the docs
+              (+) : number -> number -> number
+              https://package.elm-lang.org/packages/elm/core/latest/Basics#(+)
+
+            If we want to add two lists together, we would use this function
+              (++) : appendable -> appendable -> appendable
+              https://package.elm-lang.org/packages/elm/core/latest/Basics#(++)
+        -}
+        Add ->
             { model
                 | todos = [ { title = model.field } ]
                 , field = ""

@@ -117,6 +117,39 @@ view model =
         ]
 
 
+
+{- TODO:
+   We want to make sure the user knows that checked items are done
+   Conditionally apply css on checked items
+
+   HINT:
+    We've added new properties to each Todo record so that the type
+    is now `{ id: Int, title: String, checked: Bool }`
+
+    Using this new property, we need to check if the value is `True`
+    and apply a style
+
+   HINT:
+    Conditionals in elm can be done with
+      if ... then
+        ...
+      else
+        ...
+    or
+      case ... of
+        ... -> ...
+        ... -> ...
+
+    All of the cases must evaluate to the same type
+    https://elm-lang.org/docs/syntax#conditionals
+
+   HINT:
+    Whatever we add to this list should have the same type as the
+    previous elements (Html.Attribute)
+
+-}
+
+
 todoView : Todo -> Html Msg
 todoView todo =
     li [ style "list-style" "none" ]
@@ -125,20 +158,7 @@ todoView todo =
             [ style "font-size" "1em"
             , style "color" "slateblue"
 
-            {- TODO:
-               We want to make sure the user knows that checked items are done
-               Conditionally apply css on checked items
-
-               HINT:
-               We've added a new property to each Todo item so that the type
-               is now { title: String, checked: Bool }
-
-               Using this new property, we need to check if it is set to True
-               and apply a style
-
-               Whatever we add to this list should have the same type as the
-               previous elements (Html.Attribute)
-            -}
+            -- , TODO Conditional Style
             ]
             [ text todo.title ]
         ]

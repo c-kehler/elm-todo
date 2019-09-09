@@ -59,27 +59,32 @@ update msg model =
 
 
 -- VIEW
+{- TODO
+
+   We want to see how many total tasks we have.  Fix the compilation error
+   in the view function.
+
+   HINT:
+     `text` only takes 1 argument
+     https://package.elm-lang.org/packages/elm/html/latest/Html#text
+
+     Types not matching up?
+     See if the core library has a function to convert from one to another!
+     https://package.elm-lang.org/packages/elm/core/latest/String
+-}
 
 
 view : Model -> Html Msg
 view model =
     div []
-        [ input [ placeholder "Add a todo", onInput UpdateField, value model.field ] []
+        [ input
+            [ placeholder "Add a todo"
+            , onInput UpdateField
+            , value model.field
+            ]
+            []
         , button [ onClick Add ] [ text "Add" ]
         , ul [] (List.map todoView model.todos)
-
-        {- TODO
-
-           We want to see how many total tasks we have.  Fix the compilation
-           error occuring on the line below!
-
-           HINT:
-             text only takes 1 argument
-
-           Types not matching up?
-           See if the core library has a function to convert from one to another!
-           https://package.elm-lang.org/packages/elm/core/latest/String
-        -}
         , text "Number of todo tasks: " ++ List.length model.todos
         ]
 
