@@ -4,6 +4,7 @@ import Browser
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
+import Html.Keyed
 
 
 
@@ -112,7 +113,7 @@ view model =
     div []
         [ input [ placeholder "Add a todo", onInput UpdateField, value model.field ] []
         , button [ onClick Add ] [ text "Add" ]
-        , ul [] (List.map todoView model.todos)
+        , Html.Keyed.ul [] (List.map todoView model.todos)
         , text <| "Number of tasks left: " ++ String.fromInt uncheckedTodos
         ]
 
@@ -127,7 +128,7 @@ view model =
     is now `{ id: Int, title: String, checked: Bool }`
 
     Using this new property, we need to check if the value is `True`
-    and apply a style
+    and apply a style such as `text-decoration: line-through;`
 
    HINT:
     Conditionals in elm can be done with
@@ -150,15 +151,15 @@ view model =
 -}
 
 
-todoView : Todo -> Html Msg
+todoView : Todo -> ( String, Html Msg )
 todoView todo =
-    li [ style "list-style" "none" ]
+    ( String.fromInt todo.id
+    , li [ style "list-style" "none" ]
         [ input [ type_ "checkbox", onCheck <| SetCheckStatus todo.id ] []
         , span
             [ style "font-size" "1em"
             , style "color" "slateblue"
-
-            -- , TODO Conditional Style
             ]
             [ text todo.title ]
         ]
+    )

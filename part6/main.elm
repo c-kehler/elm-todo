@@ -4,7 +4,11 @@ import Browser
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import Html.Keyed exposing (ul)
+import Html.Keyed
+
+
+
+-- MAIN
 
 
 main : Program () Model Msg
@@ -18,147 +22,41 @@ main =
 
 type alias Model =
     { field : String
-    , filter : Visibility
     , todos : List Todo
     }
-
-
-type alias Todo =
-    { id : Int
-    , title : String
-    , completed : Bool
-    }
-
-
-type Visibility
-    = All
-    | Completed
-    | Active
-
-
-type Msg
-    = Add
-    | UpdateField String
-    | Toggle Int
-    | SetVisibility Visibility
 
 
 initialModel : Model
 initialModel =
     { field = ""
-    , filter = All
-    , todos = []
+    , todos =
+        [ { id = 1
+          , title = "Learn elm"
+          , checked = False
+          }
+        ]
     }
 
 
-view : Model -> Html Msg
-view model =
-    div []
-        [ input [ placeholder "Add a todo", onInput UpdateField, value model.field ] []
-        , button [ onClick Add ] [ text "Add" ]
-        , Html.Keyed.ul []
-            (model.todos
-                |> List.filter (filterTodo model.filter)
-                |> List.map renderTodo
-            )
-        , model.todos
-            |> itemsLeft
-            |> String.fromInt
-            |> String.append "Item left : "
-            |> text
-        , filterView model.filter
-        ]
+
+-- TYPES
 
 
-filterTodo : Visibility -> Todo -> Bool
-filterTodo visibility todo =
-    case visibility of
-        All ->
-            True
-
-        Active ->
-            not todo.completed
-
-        Completed ->
-            todo.completed
-
-
-itemsLeft : List Todo -> Int
-itemsLeft todos =
-    let
-        nbCompleted : Int
-        nbCompleted =
-            List.foldl
-                (\item count ->
-                    if item.completed then
-                        count + 1
-
-                    else
-                        count
-                )
-                0
-                todos
-    in
-    List.length todos - nbCompleted
-
-
-renderTodo : Todo -> ( String, Html Msg )
-renderTodo todo =
-    let
-        lineThroughStyle =
-            if todo.completed then
-                Html.Attributes.style "text-decoration" "line-through"
-
-            else
-                Html.Attributes.style "" ""
-    in
-    ( String.fromInt todo.id
-    , li
-        [ lineThroughStyle
-        ]
-        [ input
-            [ type_ "checkbox"
-            , onClick (Toggle todo.id)
-            , checked todo.completed
-            ]
-            []
-        , text todo.title
-        ]
-    )
+type alias Todo =
+    { id : Int
+    , title : String
+    , checked : Bool
+    }
 
 
 
--- TODO: Get this function to compile correctly
--- NOTE: This can be fixed in several different ways!
+-- UPDATE
 
 
-filterView : Visibility -> Html Msg
-filterView visibility =
-    let
-        underlineAttr filter =
-            if visibility == filter then
-                [ ( "text-decoration", "underline" ) ]
-
-            else
-                []
-    in
-    div []
-        [ a
-            [ onClick (SetVisibility All)
-            , style (underlineAttr All)
-            ]
-            [ text "  All  " ]
-        , a
-            [ onClick (SetVisibility Completed)
-            , style (underlineAttr Completed)
-            ]
-            [ text "  Completed  " ]
-        , a
-            [ onClick (SetVisibility Active)
-            , style (underlineAttr Active)
-            ]
-            [ text "  Active  " ]
-        ]
+type Msg
+    = Add
+    | UpdateField String
+    | SetCheckStatus Int Bool
 
 
 update : Msg -> Model -> Model
@@ -171,33 +69,97 @@ update msg model =
             let
                 nextId : Int
                 nextId =
-                    case List.head model.todos of
-                        Nothing ->
-                            0
-
-                        Just todo ->
-                            todo.id + 1
+                    List.map .id model.todos
+                        |> List.maximum
+                        |> Maybe.withDefault 0
+                        |> (+) 1
             in
             { model
                 | todos =
                     { id = nextId
                     , title = model.field
-                    , completed = False
+                    , checked = False
                     }
                         :: model.todos
                 , field = ""
             }
 
-        Toggle id ->
+        SetCheckStatus todoId isChecked ->
             let
+                updateTodo : Todo -> Todo
                 updateTodo todo =
-                    if todo.id == id then
-                        { todo | completed = not todo.completed }
+                    if todo.id == todoId then
+                        { todo | checked = isChecked }
 
                     else
                         todo
             in
             { model | todos = List.map updateTodo model.todos }
 
-        SetVisibility visibility ->
-            { model | filter = visibility }
+
+
+-- VIEW
+
+
+view : Model -> Html Msg
+view model =
+    let
+        uncheckedTodos : Int
+        uncheckedTodos =
+            model.todos
+                |> List.filter (\todo -> not todo.checked)
+                |> List.length
+    in
+    div []
+        [ input [ placeholder "Add a todo", onInput UpdateField, value model.field ] []
+        , button [ onClick Add ] [ text "Add" ]
+        , Html.Keyed.ul [] (List.map todoView model.todos)
+        , text <| "Number of tasks left: " ++ String.fromInt uncheckedTodos
+        ]
+
+
+
+{- TODO:
+   We want to make sure the user knows that checked items are done
+   Conditionally apply css on checked items
+
+   HINT:
+    We've added new properties to each Todo record so that the type
+    is now `{ id: Int, title: String, checked: Bool }`
+
+    Using this new property, we need to check if the value is `True`
+    and apply a style such as `text-decoration: line-through;`
+
+   HINT:
+    Conditionals in elm can be done with
+      if ... then
+        ...
+      else
+        ...
+    or
+      case ... of
+        ... -> ...
+        ... -> ...
+
+    All of the cases must evaluate to the same type
+    https://elm-lang.org/docs/syntax#conditionals
+
+   HINT:
+    Whatever we add to this list should have the same type as the
+    previous elements (Html.Attribute)
+
+-}
+
+
+todoView : Todo -> ( String, Html Msg )
+todoView todo =
+    ( String.fromInt todo.id
+    , li [ style "list-style" "none" ]
+        [ input [ type_ "checkbox", onCheck <| SetCheckStatus todo.id ] []
+        , span
+            [ style "font-size" "1em"
+            , style "color" "slateblue"
+            ]
+            [ text todo.title ]
+        ]
+    )
