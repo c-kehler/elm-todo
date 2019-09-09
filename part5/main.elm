@@ -103,18 +103,15 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    let
-        uncheckedTodos : Int
-        uncheckedTodos =
-            model.todos
-                |> List.filter (\todo -> not todo.checked)
-                |> List.length
-    in
     div []
-        [ input [ placeholder "Add a todo", onInput UpdateField, value model.field ] []
+        [ input
+            [ placeholder "Add a todo"
+            , onInput UpdateField
+            , value model.field
+            ]
+            []
         , button [ onClick Add ] [ text "Add" ]
         , Html.Keyed.ul [] (List.map todoView model.todos)
-        , text <| "Number of tasks left: " ++ String.fromInt uncheckedTodos
         ]
 
 

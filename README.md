@@ -16,4 +16,6 @@ elm reactor
 3. Add a checkbox to each TODO element
 4. Count total number of todo tasks
 5. Conditionally apply css on checked items
-6. Get `filterView` to compile
+6. Display the number of unchecked items
+
+bonus. Get `filterView` to compile

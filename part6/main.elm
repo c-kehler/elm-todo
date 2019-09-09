@@ -104,51 +104,47 @@ update msg model =
 view : Model -> Html Msg
 view model =
     let
-        uncheckedTodos : Int
-        uncheckedTodos =
-            model.todos
-                |> List.filter (\todo -> not todo.checked)
-                |> List.length
+        tasksLeftMessage : String
+        tasksLeftMessage =
+            case countIncomplete model.todos of
+                0 ->
+                    "All done!"
+
+                numTasks ->
+                    "Number of tasks left: " ++ String.fromInt numTasks
     in
     div []
-        [ input [ placeholder "Add a todo", onInput UpdateField, value model.field ] []
+        [ input
+            [ placeholder "Add a todo"
+            , onInput UpdateField
+            , value model.field
+            ]
+            []
         , button [ onClick Add ] [ text "Add" ]
         , Html.Keyed.ul [] (List.map todoView model.todos)
-        , text <| "Number of tasks left: " ++ String.fromInt uncheckedTodos
+        , text tasksLeftMessage
         ]
 
 
 
-{- TODO:
-   We want to make sure the user knows that checked items are done
-   Conditionally apply css on checked items
+{- TODO: Fix the `countIncomplete` function to return the number of tasks that
+    are unchecked.
 
    HINT:
-    We've added new properties to each Todo record so that the type
-    is now `{ id: Int, title: String, checked: Bool }`
+    The syntax
+      let ... in
+    allows us to abstract some code from the result while keeping it in the
+    same function
 
-    Using this new property, we need to check if the value is `True`
-    and apply a style such as `text-decoration: line-through;`
-
-   HINT:
-    Conditionals in elm can be done with
-      if ... then
-        ...
-      else
-        ...
-    or
-      case ... of
-        ... -> ...
-        ... -> ...
-
-    All of the cases must evaluate to the same type
-    https://elm-lang.org/docs/syntax#conditionals
-
-   HINT:
-    Whatever we add to this list should have the same type as the
-    previous elements (Html.Attribute)
-
+    Can you find the 2 List functions that could be used to get `List Todo`
+    narrowed down to only the unchecked `List Todo` and then to `Int`?
+    https://package.elm-lang.org/packages/elm/core/latest/List
 -}
+
+
+countIncomplete : List Todo -> Int
+countIncomplete todos =
+    -1
 
 
 todoView : Todo -> ( String, Html Msg )
@@ -159,6 +155,11 @@ todoView todo =
         , span
             [ style "font-size" "1em"
             , style "color" "slateblue"
+            , if todo.checked then
+                style "text-decoration" "line-through"
+
+              else
+                style "" ""
             ]
             [ text todo.title ]
         ]
