@@ -10,4 +10,4 @@ elm reactor
 
 ---
 ### Goal
-Conditionally apply css on checked items
+Fix the `countIncomplete` function to return the number of tasks that are unchecked

@@ -11,5 +11,3 @@ elm reactor
 ---
 ### Goal
 Be able to add multiple items to the TODO list.
-
-There's documentation on the cons (::) operator [here](https://package.elm-lang.org/packages/elm/core/latest/List#(::)).

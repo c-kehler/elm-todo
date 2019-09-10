@@ -1,14 +1,16 @@
 ## Todo list in Elm
 This is a simple todo list for the purpose of learning Elm.
----
-### Setup
+https://docs.google.com/presentation/d/1mR5hxZmO8WyQc7SsrZ8faRf0KsBfDAYVOx37ww4_uYM/edit?usp=sharing
 
-## Elm
+---
+
+## Setup
+
+### Elm
 https://guide.elm-lang.org/install.html
 
-## Workshop
+### Workshop
 https://github.com/jscho13/elm-todo
-
 
 ### Usage
 
@@ -25,6 +27,5 @@ elm reactor
 3. Add a checkbox to each TODO element
 4. Count total number of todo tasks
 5. Conditionally apply css on checked items
-6. Count the number of unchecked items
-
-bonus. Get `filterView` to compile
+6. Fix the `countIncomplete` function to return the number of tasks that are unchecked
+- Bonus: Get `filterView` to compile
