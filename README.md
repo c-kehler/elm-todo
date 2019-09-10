@@ -21,10 +21,10 @@ elm reactor
 ---
 ### Goals
 1. Simple "hello world" program
-2. Be able to add multiple items to the TODO list
+2. Add multiple items to the TODO list
 3. Add a checkbox to each TODO element
 4. Count total number of todo tasks
 5. Conditionally apply css on checked items
-6. Display the number of unchecked items
+6. Count the number of unchecked items
 
 bonus. Get `filterView` to compile
