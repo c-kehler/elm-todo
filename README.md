@@ -1,26 +1,21 @@
 ## Todo list in Elm
 This is a simple todo list for the purpose of learning Elm.
-https://docs.google.com/presentation/d/1mR5hxZmO8WyQc7SsrZ8faRf0KsBfDAYVOx37ww4_uYM/edit?usp=sharing
 
 ---
 
-## Setup
+## Workshop
+https://docs.google.com/presentation/d/1mR5hxZmO8WyQc7SsrZ8faRf0KsBfDAYVOx37ww4_uYM/edit?usp=sharing
 
-### Elm
+### Install Elm
 https://guide.elm-lang.org/install.html
 
-### Workshop
-https://github.com/jscho13/elm-todo
-
 ### Usage
-
 Go to the proper directory and run `elm reactor` e.g:
 ```
 cd part1
 elm reactor
 ```
 
----
 ### Goals
 1. Simple "hello world" program
 2. Add multiple items to the TODO list
