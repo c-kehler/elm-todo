@@ -62,7 +62,7 @@ update msg model =
 {- TODO
 
    We want to see how many total tasks we have.  Fix the compilation error
-   in the view function.
+   in the `view` function.
 
    HINT:
      `text` only takes 1 argument

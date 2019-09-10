@@ -139,6 +139,8 @@ view model =
     Can you find the 2 List functions that could be used to get `List Todo`
     narrowed down to only the unchecked `List Todo` and then to `Int`?
     https://package.elm-lang.org/packages/elm/core/latest/List
+
+    Can these functions be chained together somehow?
 -}
 
 
