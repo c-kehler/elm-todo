@@ -112,10 +112,6 @@ view model =
 
                 numTasks ->
                     "Number of tasks left: " ++ String.fromInt numTasks
-
-        totalTasksMessage =
-            "Total number of tasks: "
-                ++ String.fromInt (List.length model.todos)
     in
     div []
         [ input
@@ -126,7 +122,6 @@ view model =
             []
         , button [ onClick Add ] [ text "Add" ]
         , Html.Keyed.ul [] (List.map todoView model.todos)
-        , text totalTasksMessage
         , text tasksLeftMessage
         ]
 
